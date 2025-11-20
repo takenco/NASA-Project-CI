@@ -5,14 +5,19 @@ const {
     mongoDisconnect,
 } = require('../../services/mongo');
 
+const {
+    loadPlanetsData,
+} = require('../../models/planets.model');
+
 
 describe ('Lanches API', () =>{
     beforeAll(async () => {
     await mongoConnect();
+    await loadPlanetsData();
     });
 
     afterAll(async () =>{
-      await mongoDisconnect();  
+        await mongoDisconnect();  
     })
     describe('Test GET  /launches', ()=> {
         test('It should respond with 200 sucess', async () => {
