@@ -9,7 +9,7 @@ on:
 jobs:
   build:
     env:
-      CI: true
+      CI: false
       MONGO_URL: mongodb://localhost/nasaFranck
     strategy:
       matrix:
