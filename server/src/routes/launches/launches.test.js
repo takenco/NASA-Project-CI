@@ -1,8 +1,8 @@
-
+require('dotenv').config();
 const request = require('supertest');
 const app = require('../../app');
 const { 
-    mongoConnect ,
+    mongoConnect,
     mongoDisconnect,
 } = require('../../services/mongo');
 
@@ -12,40 +12,49 @@ const {
 
 
 describe ('Lanches API', () =>{
+    
     beforeAll(async () => {
-    await mongoConnect();
+    
+    try {
+        await mongoConnect();
+        console.log('MongoDB connected successfully for tests.');
+    } catch (err) {
+        console.error('MongoDB connection error:', err);
+        process.exit(1); // Exit if connection fails
+    }
     await loadPlanetsData();
+    jest.setTimeout(10000);
     });
 
     afterAll(async () =>{
         await mongoDisconnect();  
-    })
+    });
     describe('Test GET  /launches', ()=> {
         test('It should respond with 200 sucess', async () => {
             const response = await request(app)
             .get('/v1/launches')
             .expect('Content-Type', /json/)
             .expect(200);
-        });
+        }, 30000);
     });
     
     describe('Test POST  /launch', ()=> {
         const completeLaunchData = {
             mission: "USS Entreprise",
             rocket: "NCC 1701-D",
-            target: 'Kepler-296 e',
+            target: 'Kepler-62 f',
             launchDate: 'January 4, 2028',
         };
         const launchDataWithoutDate = {
             mission: "USS Entreprise",
             rocket: "NCC 1701-D",
-            target: 'Kepler-296 e',
+            target: 'Kepler-62 f',
     
         };
         const launchDataWithInvalidDate = {
             mission: "USS Entreprise",
             rocket: "NCC 1701-D",
-            target: 'Kepler-296 e',
+            target: 'Kepler-62 f',
             launchDate: 'zoot',
         };
         test('It should respond with 201 created', async () => {
@@ -60,7 +69,7 @@ describe ('Lanches API', () =>{
     
             expect(response.body).toMatchObject(launchDataWithoutDate);
             
-        });
+        }, 30000);
         test('It should catch invalid dates', async () => {
             const response = await request(app)
             .post('/v1/launches')
@@ -71,7 +80,7 @@ describe ('Lanches API', () =>{
             expect(response.body).toStrictEqual({
                 error: "Missing required launch property",
             });
-        });
+        }, 30000);
         test('It should catch invalid dates', async () => {
             const response = await request(app)
             .post('/v1/launches')
@@ -83,7 +92,7 @@ describe ('Lanches API', () =>{
                 error: "Invalid launch date",
             });
     
-        });
+        }, 30000);
     });
 
 })

@@ -15,6 +15,7 @@ const server = http.createServer(app);
 
 async function startServer(){
 
+    
     await mongoConnect();
     await loadPlanetsData();
     await loadLaunchData();
