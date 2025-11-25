@@ -9,12 +9,12 @@ on:
 jobs:
   build:
     env:
-      CI: true
+      CI: ""
       MONGO_URL: mongodb://localhost/nasaFranck
     strategy:
       matrix:
         node-version: [23.x]
-        mongodb-version: ['4.4']
+        mongodb-version: ['4.2', 4.4']
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
