@@ -23,7 +23,6 @@ describe ('Lanches API', () =>{
         process.exit(1); // Exit if connection fails
     }
     await loadPlanetsData();
-    jest.setTimeout(10000);
     });
 
     afterAll(async () =>{
@@ -35,7 +34,7 @@ describe ('Lanches API', () =>{
             .get('/v1/launches')
             .expect('Content-Type', /json/)
             .expect(200);
-        }, 10000);
+        });
     });
     
     describe('Test POST  /launch', ()=> {
@@ -69,7 +68,7 @@ describe ('Lanches API', () =>{
     
             expect(response.body).toMatchObject(launchDataWithoutDate);
             
-        }, 30000);
+        });
         test('It should catch invalid dates', async () => {
             const response = await request(app)
             .post('/v1/launches')
@@ -80,7 +79,7 @@ describe ('Lanches API', () =>{
             expect(response.body).toStrictEqual({
                 error: "Missing required launch property",
             });
-        }, 30000);
+        });
         test('It should catch invalid dates', async () => {
             const response = await request(app)
             .post('/v1/launches')
@@ -92,7 +91,7 @@ describe ('Lanches API', () =>{
                 error: "Invalid launch date",
             });
     
-        }, 30000);
+        });
     });
 
 })
