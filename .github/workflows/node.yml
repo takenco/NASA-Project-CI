@@ -26,7 +26,10 @@ jobs:
         uses: supercharge/mongodb-github-action@1.6.0
         with:
           mongodb-version: ${{ matrix.mongodb-version }}
-      - run: npm install --prefix server
+      - name: Install dependencies
+        run: |
+          cd server
+          npm ci 
       - run: npm install --prefix client
       - run: npm run build --prefix client
       - run: npm test
